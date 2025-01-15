@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "bonphyre"
+version = "0.1.0"
+description = "A backend server for a simple crowdfunding platform where users can create, view, and contribute to projects."
+authors = ["Francis Echesi <fechesi67@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.115.6"}
+python-dotenv = "^1.0.1"
+sqlmodel = "^0.0.22"
+sqlalchemy-utils = "^0.41.2"
+psycopg2-binary = "^2.9.10"
+python-jose = "^3.3.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

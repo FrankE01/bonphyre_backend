@@ -32,7 +32,7 @@ projects.
    cd app
    python main.py
    ```
-6. Access the API documentation at `http://127.0.0.1:8000/docs`.
+6. Access the API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
 ## Running the server (Docker)
 
@@ -45,4 +45,4 @@ projects.
    ```sh
    docker-compose up
    ```
-3. Access the API documentation at `http://127.0.0.1:8000/docs`.
+3. Access the API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).

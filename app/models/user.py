@@ -25,7 +25,9 @@ class User(Base, table=True):
 
 class CreateUserInput(BaseModel):
     username: str
-    email: str = PyField(pattern=r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$", examples=["string"])
+    email: str = PyField(
+        pattern=r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$", examples=["string"]
+    )
     password: str
 
     class Config:

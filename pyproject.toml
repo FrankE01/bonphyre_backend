@@ -14,10 +14,15 @@ sqlalchemy-utils = "^0.41.2"
 psycopg2-binary = "^2.9.10"
 python-jose = "^3.3.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+bcrypt = "^4.2.1"
 
 
 [tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
 isort = "^5.13.2"
+
+[tool.isort]
+profile = "black"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,2 +1,5 @@
-from app.config.database import engine
-from app.config.logger import logger
+# isort: off
+from config.logs import Log_Requests, logger
+
+# isort: on
+from config.database import engine

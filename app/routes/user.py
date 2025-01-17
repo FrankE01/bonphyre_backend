@@ -1,21 +1,20 @@
-import os
-
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from models import CreateUserInput, CreateUserOutput, LoginUserInput, User
+from fastapi.security import OAuth2PasswordRequestForm
+from models import CreateUserInput, CreateUserOutput, LoginUserInput
+from schemas import User
 from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
 from utils import (
+    Session,
+    authenticate_user_token,
     create_access_token,
     get_password_hash,
     get_session,
-    verify_access_token,
+    oauth2_scheme,
     verify_password,
 )
 
 router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token")
 
 
 @router.post("/register")
@@ -33,6 +32,7 @@ async def register_user(
         access_token = create_access_token(data={"sub": user.username})
         return {"access_token": access_token, "token_type": "bearer"}
     except IntegrityError:
+        session.rollback()
         raise HTTPException(status_code=400, detail="Email or username already exists.")
 
 
@@ -50,12 +50,12 @@ async def login(
     )
     if not user:
         raise HTTPException(
-            status_code=400,
+            status_code=401,
             detail="Invalid username or password",
         )
     if not verify_password(form_data.password, user.password):
         raise HTTPException(
-            status_code=400,
+            status_code=401,
             detail="Invalid username or password",
         )
 
@@ -74,12 +74,12 @@ async def login(form_data: LoginUserInput, session: Session = Depends(get_sessio
     )
     if not user:
         raise HTTPException(
-            status_code=400,
+            status_code=401,
             detail="Invalid username or password",
         )
     if not verify_password(form_data.password, user.password):
         raise HTTPException(
-            status_code=400,
+            status_code=401,
             detail="Invalid username or password",
         )
 
@@ -92,16 +92,6 @@ async def get_current_user(
     session: Session = Depends(get_session), token: str = Depends(oauth2_scheme)
 ):
 
-    payload = verify_access_token(token)
-    if not payload:
-        raise HTTPException(status_code=400, detail="Invalid token")
+    user: User = authenticate_user_token(token, session)
 
-    username = payload.get("sub")
-
-    user = session.query(User).filter(User.username == username).first()
-    if not user:
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid token",
-        )
     return user

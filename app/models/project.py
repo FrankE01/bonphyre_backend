@@ -1,20 +1,55 @@
-from datetime import datetime
+from datetime import datetime, timezone
+from decimal import Decimal
+from uuid import UUID
 
-from models import Base, Contribution
-from sqlmodel import Field, Relationship
+from models import CreateUserOutput
+from pydantic import BaseModel, Field, field_serializer, field_validator
 
 
-class Project(Base, table=True):
-    __tablename__ = "projects"
-
-    title: str = Field(unique=True, max_length=100)
-    description: str = Field(unique=True, max_length=1000)
-    goal_amount: float = Field(decimal_places=2)
+class CreateProjectInput(BaseModel):
+    title: str
+    description: str
+    goal_amount: Decimal = Field(..., decimal_places=2, gt=0)
     deadline: datetime
 
-    users: list["User"] = Relationship(
-        link_model=Contribution, back_populates="projects"
-    )
+    class Config:
+        from_attributes = True
 
-    def __repr__(self):
-        return f"<Project(title={self.title!r})>"
+    @field_validator("deadline")
+    def deadline_must_be_in_future(cls, v: datetime):
+        if v.tzinfo is None:
+            raise ValueError("Deadline must have timezone info")
+        if v <= datetime.now(timezone.utc):
+            raise ValueError("Deadline must be in the future")
+
+        return v
+
+
+class CreateProjectOutput(BaseModel):
+    id: UUID
+    title: str
+    description: str
+    goal_amount: Decimal = Field(..., decimal_places=2)
+    deadline: datetime
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class GetProjectOutput(BaseModel):
+    id: UUID
+    title: str
+    description: str
+    goal_amount: Decimal = Field(..., decimal_places=2)
+    deadline: datetime
+    created_at: datetime
+    total_contributions: Decimal = Field(..., decimal_places=2)
+    contributors: list[CreateUserOutput]
+
+    @field_serializer("contributors")
+    def get_contributor_usernames(self, contributors: list[CreateUserOutput]):
+        return [user.username for user in contributors]
+
+    class Config:
+        from_attributes = True

@@ -1,7 +1,5 @@
-from config.database import engine
-from models.base import Base
-from models.contribution import Contribution
-from models.project import Project
-from models.user import CreateUserInput, CreateUserOutput, LoginUserInput, User
+# isort:skip_file
 
-Base.metadata.create_all(bind=engine)
+from models.user import CreateUserInput, CreateUserOutput, LoginUserInput
+from models.project import CreateProjectInput, CreateProjectOutput, GetProjectOutput
+from models.contribution import CreateContributionOUtput

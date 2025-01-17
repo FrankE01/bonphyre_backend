@@ -1,9 +1,9 @@
 from config import engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
 
 def get_session():
-    session = sessionmaker(autoflush=False, autocommit=False, bind=engine)()
+    session: Session = sessionmaker(autoflush=False, autocommit=False, bind=engine)()
 
     try:
         yield session

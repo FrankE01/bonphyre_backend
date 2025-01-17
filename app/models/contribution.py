@@ -1,18 +1,12 @@
-from uuid import UUID, uuid4
+from datetime import datetime
+from decimal import Decimal
 
-from sqlmodel import UUID as SQL_UUID
-from sqlmodel import Field, SQLModel
+from models import CreateProjectOutput, CreateUserOutput
+from pydantic import BaseModel, Field
 
 
-class Contribution(SQLModel, table=True):
-    __tablename__ = "contributions"
-
-    user_id: UUID = Field(
-        sa_type=SQL_UUID(as_uuid=True), primary_key=True, foreign_key="users.id"
-    )
-
-    project_id: UUID = Field(
-        sa_type=SQL_UUID(as_uuid=True), primary_key=True, foreign_key="projects.id"
-    )
-
-    amount: float = Field(decimal_places=2)
+class CreateContributionOUtput(BaseModel):
+    user: CreateUserOutput
+    project: CreateProjectOutput
+    amount: Decimal = Field(..., gt=0, decimal_places=2)
+    created_at: datetime

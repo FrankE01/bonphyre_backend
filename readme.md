@@ -49,3 +49,11 @@ projects.
    docker-compose up
    ```
 3. Access the API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+
+
+## Running the tests
+
+1. Run the test
+   ```sh
+   pytest
+   ```

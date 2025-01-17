@@ -33,7 +33,9 @@ async def register_user(
         return {"access_token": access_token, "token_type": "bearer"}
     except IntegrityError:
         session.rollback()
-        raise HTTPException(status_code=400, detail="Email or username already exists.")
+        raise HTTPException(
+            status_code=409, detail="Email or username already exists or Invalid input"
+        )
 
 
 @router.post("/token", include_in_schema=False)

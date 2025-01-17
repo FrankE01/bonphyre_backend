@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 from logging.handlers import RotatingFileHandler
 
@@ -10,6 +11,7 @@ logger = logging.getLogger("bonphyre")
 logging.getLogger("passlib").setLevel(logging.ERROR)
 logging.getLogger("watchfiles.main").setLevel(logging.ERROR)
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,7 +19,9 @@ logging.basicConfig(
     handlers=[
         logging.StreamHandler(),
         RotatingFileHandler(
-            "../logs/bonphyre_backend.log", maxBytes=10000000, backupCount=3
+            os.path.join(BASE_DIR, "logs", "bonphyre_backend.log"),
+            maxBytes=10000000,
+            backupCount=3,
         ),
     ],
 )

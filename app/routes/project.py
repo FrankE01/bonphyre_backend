@@ -45,7 +45,4 @@ async def get_project(project_id: UUID, session: Session = Depends(get_session))
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
 
-    # contributors: list[str] = [user.username for user in project.contributors]
-    # output = GetProjectOutput(**project.model_dump(), contributors=contributors, total_contributions=project.total_contributions)
-
     return project

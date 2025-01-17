@@ -10,3 +10,7 @@ class CreateContributionOUtput(BaseModel):
     project: CreateProjectOutput
     amount: Decimal = Field(..., gt=0, decimal_places=2)
     created_at: datetime
+
+
+class CreateContributionInput(BaseModel):
+    amount: Decimal = Field(..., gt=0, decimal_places=2)

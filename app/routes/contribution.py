@@ -3,7 +3,7 @@ from decimal import Decimal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from models import CreateContributionOUtput
+from models import CreateContributionInput, CreateContributionOUtput
 from schemas import Contribution, Project, User
 from utils import Session, authenticate_user_token, get_session, oauth2_scheme
 
@@ -13,15 +13,10 @@ router = APIRouter()
 @router.post("/{project_id}/contribute", response_model=CreateContributionOUtput)
 async def contribute(
     project_id: UUID,
-    amount: Decimal,
+    input: CreateContributionInput,
     session: Session = Depends(get_session),
     token: str = Depends(oauth2_scheme),
 ):
-
-    if amount < 0:
-        raise HTTPException(
-            status_code=400, detail="Invalid amount. Must be greater than 0"
-        )
 
     user: User = authenticate_user_token(token, session)
 
@@ -34,7 +29,7 @@ async def contribute(
         raise HTTPException(status_code=400, detail="Project deadline has passed")
 
     contribution: Contribution = Contribution(
-        user_id=user.id, project_id=project_id, amount=amount
+        user_id=user.id, project_id=project_id, amount=input.amount
     )
 
     session.add(contribution)

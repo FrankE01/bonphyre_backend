@@ -12,6 +12,7 @@ logging.getLogger("passlib").setLevel(logging.ERROR)
 logging.getLogger("watchfiles.main").setLevel(logging.ERROR)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.makedirs(os.path.join(BASE_DIR, "logs"), exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,

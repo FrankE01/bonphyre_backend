@@ -40,16 +40,24 @@ projects.
 ## Running the server (Docker)
 
 1. Clone the repository:
+
    ```sh
    git clone https://github.com/FrankE01/Bonphyre_Backend.git
    cd Bonphyre_Backend
    ```
-2. Start the docker services:
+
+2. Set up the environment variables:
+
+   ```sh
+   cp sample.env .env
+   # Edit .env file with appropriate values
+   ```
+
+3. Start the docker services:
    ```sh
    docker-compose up
    ```
-3. Access the API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
-
+4. Access the API documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
 ## Running the tests
 

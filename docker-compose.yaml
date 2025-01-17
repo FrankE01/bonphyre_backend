@@ -10,11 +10,25 @@ services:
       - .env
     depends_on:
       - db
+    volumes:
+      - ./app:/app
+    networks:
+      - bonphyre_network
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bonphyre_test
+    env_file:
+      - .env
+    depends_on:
       - test_db
     volumes:
       - ./app:/app
     networks:
       - bonphyre_network
+    entrypoint: ["pytest", "--disable-warnings"]
 
   db:
     image: postgres:15
@@ -49,7 +63,7 @@ services:
       POSTGRES_DATABASE: ${POSTGRES_DATABASE:-bonphyre_test}
       PGDATA: /data/postgresql
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - test_postgres_data:/var/lib/postgresql/data
     networks:

@@ -5,6 +5,7 @@ description = "A backend server for a simple crowdfunding platform where users c
 authors = ["Francis Echesi <fechesi67@gmail.com>"]
 readme = "README.md"
 
+
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = {extras = ["all"], version = "^0.115.6"}
@@ -21,8 +22,15 @@ bcrypt = "^4.2.1"
 black = "^24.10.0"
 isort = "^5.13.2"
 
+
+[tool.poetry.group.test.dependencies]
+httpx = "^0.28.1"
+pytest = "^8.3.4"
+
+
 [tool.isort]
 profile = "black"
+
 
 [build-system]
 requires = ["poetry-core"]

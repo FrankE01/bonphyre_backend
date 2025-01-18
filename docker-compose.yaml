@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./app:/app
+      - ./:/bonphyre
     networks:
       - bonphyre_network
 
@@ -25,7 +25,7 @@ services:
     depends_on:
       - test_db
     volumes:
-      - ./app:/app
+      - ./:/bonphyre
     networks:
       - bonphyre_network
     entrypoint: ["pytest", "--disable-warnings"]
@@ -73,6 +73,18 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx_server
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - app
+  #   networks:
+  #     - bonphyre_network
 
 volumes:
   postgres_data:

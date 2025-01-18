@@ -1,0 +1,28 @@
+services:
+  app:
+    image: bonphyre-backend:0.1.0
+    container_name: bonphyre_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://u_85ca0733_c482_4133_9b83_2dce4f9b523b:IAc1ZYzO57A2oEV8n7R529UnoSq6JN47Ef5924NVS709dK8vzEuF@pg.rapidapp.io:5432/db_85ca0733_c482_4133_9b83_2dce4f9b523b?application_name=rapidapp_nodejs
+      - TEST_DATABASE_URL=postgresql+psycopg2://postgres:postgres@test_db/bonphyre_test
+      - SECRET_KEY=337e9bac2e99639d8e78cdb43e57c660c43e8f9b2c75235d73c534ca27646dc4
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    networks:
+      - bonphyre_network
+
+  nginx:
+    image: nginx-server:0.1.0
+    container_name: nginx_server
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - bonphyre_network
+
+networks:
+  bonphyre_network:
+    driver: bridge

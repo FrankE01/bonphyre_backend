@@ -1,6 +1,6 @@
 FROM python:3.10-slim
 
-WORKDIR /app
+WORKDIR /bonphyre
 
 RUN pip install --no-cache-dir poetry==1.8.3
 
@@ -11,6 +11,8 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-interaction --no-ansi
 
 COPY . .
+
+WORKDIR /bonphyre/app
 
 EXPOSE 8000
 
